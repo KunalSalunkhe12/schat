@@ -43,7 +43,7 @@ json_schema = {
 
 def call_openai_assistant(json_schema, all_messages):
     # Make the API call using the correct method and model
-    response = openai.chat_completions.create(
+    response = openai.chat.completions.create(
         model="gpt-4o-2024-08-06",
         messages=all_messages,
         functions=[
