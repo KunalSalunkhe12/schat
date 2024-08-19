@@ -13,46 +13,17 @@ class Message(BaseModel):
     user_message: str
     conversation_history: list  # List of previous messages (if any)
 
-# Store the assistant instructions and JSON schema
+# Store the assistant instructions
 instructions = '''You’re an expert matchmaking assistant whose job is to chat with a user and create a matchmaking profile for them...'''
-json_schema = {
-    "name": "matchmaking_chatbot",
-    "schema": {
-        "type": "object",
-        "properties": {
-            "response_to_user": {"type": "string"},
-            "user_profile": {
-                "type": "object",
-                "properties": {
-                    "relationship_goals": {"type": "string"},
-                    "appearance": {
-                        "type": "object",
-                        "properties": {
-                            "personal_appearance": {"type": "string"},
-                            "appearance_preferred_in_partner": {"type": "string"},
-                            "importance_of_appearance_on_a_scale_of_1_to_10": {"type": "integer"}
-                        },
-                        "required": ["personal_appearance", "appearance_preferred_in_partner", "importance_of_appearance_on_a_scale_of_1_to_10"]
-                    }
-                }
-            }
-        },
-        "required": ["response_to_user", "user_profile"]
-    }
-}
 
-def call_openai_assistant(json_schema, all_messages):
-    # Make the API call with the new interface
+def call_openai_assistant(all_messages):
+    # Make the API call using the correct OpenAI method
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
-        messages=all_messages,
-        response_format={
-            "type": "json_schema",
-            "json_schema": json_schema
-        }
+        messages=all_messages
     )
     
-    assistant_response = response.choices[0].message.content
+    assistant_response = response.choices[0].message['content']
 
     # Return the response
     return assistant_response
@@ -78,7 +49,7 @@ async def chat(message: Message):
     })
 
     # Call the OpenAI assistant
-    assistant_response = call_openai_assistant(json_schema, message.conversation_history)
+    assistant_response = call_openai_assistant(message.conversation_history)
 
     # Append the assistant's response to the conversation history
     message.conversation_history.append({
