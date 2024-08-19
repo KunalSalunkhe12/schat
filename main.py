@@ -43,22 +43,19 @@ json_schema = {
 
 def call_openai_assistant(json_schema, all_messages):
     # Make the API call using the correct method and model
-    response = openai.ChatCompletion.create(
+    response = openai.chat_completions.create(
         model="gpt-4o-2024-08-06",
         messages=all_messages,
         functions=[
             {
                 "name": "matchmaking_chatbot",
-                "parameters": {
-                    "type": "json_schema",
-                    "json_schema": json_schema
-                }
+                "parameters": json_schema
             }
         ]
     )
     
     # Extract assistant's response
-    assistant_response = response.choices[0].message['content']
+    assistant_response = response['choices'][0]['message']['content']
 
     # Return the assistant's response
     return assistant_response
