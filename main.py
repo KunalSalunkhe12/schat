@@ -4,7 +4,7 @@ import openai
 import os
 
 # Initialize OpenAI API with your API key
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Optionally load from environment, or use the key directly
+openai.api_key = os.getenv("OPENAI_API_KEY")  # You can also load this from environment or set it directly.
 
 app = FastAPI()
 
@@ -16,8 +16,8 @@ class Message(BaseModel):
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
     # Make the API call to OpenAI Chat Completions
-    response = openai.chat.completion.create(
-        model="gpt-4o-mini",
+    response = openai.chat.completions.create(
+        model="gpt-4o",
         messages=all_messages
     )
     
@@ -47,7 +47,7 @@ async def chat(message: Message):
         "content": message.user_message
     })
 
-    # Call the OpenAI assistant
+    # Call the OpenAI assistant using the same function as the working Streamlit code
     assistant_response = call_openai_assistant(message.conversation_history)
 
     # Append the assistant's response to the conversation history
