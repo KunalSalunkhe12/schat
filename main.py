@@ -3,8 +3,8 @@ from pydantic import BaseModel
 import openai
 import os
 
-# Load the OpenAI API key from the environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI API with your API key
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Optionally load from environment, or use the key directly
 
 app = FastAPI()
 
@@ -42,22 +42,19 @@ json_schema = {
 }
 
 def call_openai_assistant(json_schema, all_messages):
-    # Make the API call using the correct method and model
+    # Make the API call with the new interface
     response = openai.chat.completions.create(
-        model="gpt-4o-2024-08-06",
+        model="gpt-4o-mini",
         messages=all_messages,
-        functions=[
-            {
-                "name": "matchmaking_chatbot",
-                "parameters": json_schema
-            }
-        ]
+        response_format={
+            "type": "json_schema",
+            "json_schema": json_schema
+        }
     )
     
-    # Extract assistant's response
-    assistant_response = response['choices'][0]['message']['content']
+    assistant_response = response.choices[0].message.content
 
-    # Return the assistant's response
+    # Return the response
     return assistant_response
 
 @app.get("/")
