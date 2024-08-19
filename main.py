@@ -13,17 +13,16 @@ class Message(BaseModel):
     user_message: str
     conversation_history: list  # List of previous messages (if any)
 
-# Store the assistant instructions
-instructions = '''You’re an expert matchmaking assistant whose job is to chat with a user and create a matchmaking profile for them...'''
-
+# Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
-    # Make the API call using the correct OpenAI method
-    response = openai.chat.completions.create(
+    # Make the API call to OpenAI Chat Completions
+    response = openai.chat.completion.create(
         model="gpt-4o-mini",
         messages=all_messages
     )
     
-    assistant_response = response.choices[0].message['content']
+    # Extract the assistant's response content from the API response
+    assistant_response = response["choices"][0]["message"]["content"]
 
     # Return the response
     return assistant_response
@@ -39,7 +38,7 @@ async def chat(message: Message):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
-            "content": instructions
+            "content": "You are a helpful assistant whose job is to chat with a user and create a matchmaking profile for them."
         })
 
     # Add user's message to the conversation history
