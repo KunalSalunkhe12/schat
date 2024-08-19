@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from pydantic import BaseModel
 import openai
 import os
 
-# Load the OpenAI API key from environment variable
+# Load the OpenAI API key from the environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
@@ -42,9 +42,9 @@ json_schema = {
 }
 
 def call_openai_assistant(json_schema, all_messages):
-    # Make the API call using the format you provided
-    response = openai.chat.completion.create(
-        model="gpt-4o-mini",
+    # Make the API call using the correct method and model
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-2024-08-06",
         messages=all_messages,
         functions=[
             {
