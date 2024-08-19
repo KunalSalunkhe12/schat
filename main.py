@@ -22,7 +22,7 @@ def call_openai_assistant(all_messages):
     )
     
     # Extract the assistant's response content from the API response
-    assistant_response = response["choices"][0]["message"]["content"]
+    assistant_response = response.choices[0].message.content"
 
     # Return the response
     return assistant_response
