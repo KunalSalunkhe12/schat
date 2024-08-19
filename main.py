@@ -42,18 +42,25 @@ json_schema = {
 }
 
 def call_openai_assistant(json_schema, all_messages):
-    # Make the API call using the custom format
-    response = openai.chat.completions.create(
+    # Make the API call using the format you provided
+    response = openai.ChatCompletion.create(
         model="gpt-4o-mini",
         messages=all_messages,
-        response_format={
-            "type": "json_schema",
-            "json_schema": json_schema
-        }
+        functions=[
+            {
+                "name": "matchmaking_chatbot",
+                "parameters": {
+                    "type": "json_schema",
+                    "json_schema": json_schema
+                }
+            }
+        ]
     )
+    
+    # Extract assistant's response
+    assistant_response = response.choices[0].message['content']
 
-    # Extract the assistant's response
-    assistant_response = response['choices'][0]['message']['content']
+    # Return the assistant's response
     return assistant_response
 
 @app.get("/")
