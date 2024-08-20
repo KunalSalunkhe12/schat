@@ -17,7 +17,7 @@ class Message(BaseModel):
 def call_openai_assistant(all_messages):
     # Make the API call to OpenAI Chat Completions
     response = openai.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o-mini",
         messages=all_messages
     )
     
