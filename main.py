@@ -22,12 +22,33 @@ def call_openai_assistant(all_messages):
     )
     
     # Extract the assistant's response content from the API response
-    assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
+    assistant_response = response.choices[0].message.content.strip()
 
-    # Format the response for better readability, removing `****` and adding new lines where necessary
-    formatted_response = assistant_response.replace("**", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.").replace("3.", "\n3.").replace("4.", "\n4.").replace("5.", "\n5.").replace("6.", "\n6.").replace("7.", "\n7.")
+    # Format the response for readability
+    formatted_response = format_response(assistant_response)
 
     # Return the formatted response
+    return formatted_response
+
+# Function to format the assistant's response for better readability
+def format_response(response):
+    # Split the response into paragraphs for better readability
+    paragraphs = response.split("\n")
+    
+    # Ensure numbered and bulleted lists appear on separate lines
+    formatted_paragraphs = []
+    for paragraph in paragraphs:
+        paragraph = paragraph.replace("1.", "\n1.")
+        paragraph = paragraph.replace("2.", "\n2.")
+        paragraph = paragraph.replace("3.", "\n3.")
+        paragraph = paragraph.replace("4.", "\n4.")
+        paragraph = paragraph.replace("5.", "\n5.")
+        paragraph = paragraph.replace("•", "\n•")
+        formatted_paragraphs.append(paragraph.strip())
+    
+    # Join paragraphs back together with proper spacing
+    formatted_response = "\n\n".join(formatted_paragraphs).strip()
+    
     return formatted_response
 
 @app.get("/")
