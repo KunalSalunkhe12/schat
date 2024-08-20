@@ -29,7 +29,7 @@ def call_openai_assistant(all_messages):
 
     # Return the formatted response
     return formatted_response
-
+#1
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the matchmaking assistant API!"}
