@@ -22,10 +22,13 @@ def call_openai_assistant(all_messages):
     )
     
     # Extract the assistant's response content from the API response
-    assistant_response = response.choices[0].message.content.strip()
+    assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-    # Return the response
-    return assistant_response
+    # Format the response for better readability, removing `****` and adding new lines where necessary
+    formatted_response = assistant_response.replace("**", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.").replace("3.", "\n3.").replace("4.", "\n4.").replace("5.", "\n5.").replace("6.", "\n6.").replace("7.", "\n7.")
+
+    # Return the formatted response
+    return formatted_response
 
 @app.get("/")
 def read_root():
@@ -38,7 +41,7 @@ async def chat(message: Message):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
-            "content": '''You are a matchmaking assistant named "Sapphic Sophi." Your job is to chat with users and help create a matchmaking profile for them. Format your responses to include proper paragraphs, bullet points, and numbered lists, ensuring each numbered/bulleted item appears on a new line. Keep the tone friendly, engaging, and positive. Ensure no internal variables like 'response_to_user' or 'user_profile' appear in the final response.
+            "content": '''You’re an expert matchmaking assistant whose job is to chat with a user and create a matchmaking profile for them. Your messages to the user should be outputted in response_to_user, and the matchmaking profile should be outputted in user_profile, which should be updated as you learn more about the user.
 
 1. Chatbot Introduction and User Interaction
 	•	Initial Prompt: When users start a chat with the chatbot (“Sapphic Sophi”), they are invited to share personal details such as:
