@@ -24,8 +24,11 @@ def call_openai_assistant(all_messages):
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-    # Return the response
-    return assistant_response
+    # Format the response for better readability, removing `****` and adding new lines where necessary
+    formatted_response = assistant_response.replace("**", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.").replace("3.", "\n3.").replace("4.", "\n4.").replace("5.", "\n5.").replace("6.", "\n6.").replace("7.", "\n7.")
+
+    # Return the formatted response
+    return formatted_response
 
 @app.get("/")
 def read_root():
