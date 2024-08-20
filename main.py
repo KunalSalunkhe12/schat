@@ -24,32 +24,8 @@ def call_openai_assistant(all_messages):
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()
 
-    # Format the response for readability
-    formatted_response = format_response(assistant_response)
-
-    # Return the formatted response
-    return formatted_response
-
-# Function to format the assistant's response for better readability
-def format_response(response):
-    # Split the response into paragraphs for better readability
-    paragraphs = response.split("\n")
-    
-    # Ensure numbered and bulleted lists appear on separate lines
-    formatted_paragraphs = []
-    for paragraph in paragraphs:
-        paragraph = paragraph.replace("1.", "\n1.")
-        paragraph = paragraph.replace("2.", "\n2.")
-        paragraph = paragraph.replace("3.", "\n3.")
-        paragraph = paragraph.replace("4.", "\n4.")
-        paragraph = paragraph.replace("5.", "\n5.")
-        paragraph = paragraph.replace("•", "\n•")
-        formatted_paragraphs.append(paragraph.strip())
-    
-    # Join paragraphs back together with proper spacing
-    formatted_response = "\n\n".join(formatted_paragraphs).strip()
-    
-    return formatted_response
+    # Return the response
+    return assistant_response
 
 @app.get("/")
 def read_root():
@@ -62,7 +38,7 @@ async def chat(message: Message):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
-            "content": '''You’re an expert matchmaking assistant whose job is to chat with a user and create a matchmaking profile for them. Your messages to the user should be outputted in response_to_user, and the matchmaking profile should be outputted in user_profile, which should be updated as you learn more about the user.
+            "content": '''You are a matchmaking assistant named "Sapphic Sophi." Your job is to chat with users and help create a matchmaking profile for them. Format your responses to include proper paragraphs, bullet points, and numbered lists, ensuring each numbered/bulleted item appears on a new line. Keep the tone friendly, engaging, and positive. Ensure no internal variables like 'response_to_user' or 'user_profile' appear in the final response.
 
 1. Chatbot Introduction and User Interaction
 	•	Initial Prompt: When users start a chat with the chatbot (“Sapphic Sophi”), they are invited to share personal details such as:
