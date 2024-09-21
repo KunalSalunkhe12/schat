@@ -72,5 +72,6 @@ async def chat(message: Message):
     # Return the assistant's response and the updated conversation history
     return {
         "assistant_response": assistant_response['response_to_user'],
+        "user_profile": assistant_response['user_profile'],
         "conversation_history": message.conversation_history
     }
