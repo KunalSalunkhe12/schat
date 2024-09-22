@@ -44,7 +44,7 @@ def read_root():
 @app.post("/chat/")
 async def chat(message: Message):
     # Initialize the conversation if it is the first message
-    print("Received MESSAGE START-----", Message)
+    print("Received MESSAGE START-----", message)
     print("MESSAGE END ------")
 
     if len(message.conversation_history) == 0:
