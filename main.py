@@ -44,6 +44,9 @@ def read_root():
 @app.post("/chat/")
 async def chat(message: Message):
     # Initialize the conversation if it is the first message
+    print("Received MESSAGE START-----", Message)
+    print("MESSAGE END ------")
+
     if len(message.conversation_history) == 0:
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
@@ -73,5 +76,4 @@ async def chat(message: Message):
     return {
         "assistant_response": assistant_response['response_to_user'],
         "user_profile": assistant_response['user_profile'],
-        "conversation_history": message.conversation_history
     }
