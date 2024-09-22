@@ -44,5 +44,5 @@ Ensure that you collect these key attributes:
 - Career & Income: What are their career goals and financial expectations?
 - Willingness to Travel/Move: How flexible are they regarding location and travel?
 
-Please follow these guidelines in every conversation to ensure a positive and productive interaction.
+Please follow these guidelines in every conversation to ensure a positive and productive interaction and Generate the User profile periodically based on the provided Json schema.
 '''
