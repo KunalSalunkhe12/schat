@@ -51,7 +51,7 @@ async def chat(message: Message):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
-            "content": userInteractionResources.assistantInstructions
+            "content": oldUserInteractionResources.assistantInstructions
         })
 
     # Add user's message to the conversation history
