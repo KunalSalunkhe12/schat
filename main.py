@@ -71,23 +71,17 @@ def call_openai_assistant(all_messages):
                 }
             )
     
-            # Extract the assistant's response content from the API response
-            assistant_response = response.choices[0].message.content.strip()
-
-            # Parse the assistant's response as JSON if it's formatted that way
-            try:
-                assistant_response_json = json.loads(assistant_response)
-            except json.JSONDecodeError:
-                raise ValueError("The assistant's response is not in the expected JSON format.")
+             # Extract the assistant's response content from the API response (assuming it's a dict)
+            assistant_response = response.choices[0].message['content']
 
             # Format the response for better readability
-            formatted_response = assistant_response_json.get('response_to_user', '').replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
+            formatted_response = assistant_response['response_to_user'].replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
 
             # Return the formatted response and user profile
             return {
                 "response_to_user": formatted_response,
-                "user_profile": assistant_response_json.get('user_profile', {})
-            }
+                "user_profile": assistant_response.get('user_profile', {})
+    }
 
 # Function to update the user profile based on new data
 def update_user_profile(existing_profile, new_data):
