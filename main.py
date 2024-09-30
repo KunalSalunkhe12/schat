@@ -3,22 +3,13 @@ from pydantic import BaseModel
 import openai
 import os
 import userInteractionResources
-
-
 import json
-from typing import Dict, Any
-
+import re
 
 # Initialize OpenAI API with your API key
 openai.api_key = os.getenv("OPENAI_API_KEY")  # You can also load this from environment or set it directly.
 
 app = FastAPI()
-
-def serialize_message(message: Dict[str, Any]) -> Dict[str, str]:
-    return {
-        "role": str(message.get("role", "")),
-        "content": str(message.get("content", ""))
-    }
 
 # Pydantic model for the message request
 class Message(BaseModel):
@@ -27,25 +18,25 @@ class Message(BaseModel):
 
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
-    serialized_messages = [serialize_message(msg) for msg in all_messages]
     # Make the API call to OpenAI Chat Completions
     response = openai.chat.completions.create(
-        model="gpt-4o-mini",  # Changed from "gpt-4o-mini" to "gpt-4"
+        model="gpt-4o-mini",
         messages=all_messages,
-        response_format= {
-            type: "json_schema",
+          response_format = {
+            "type": "json_schema",
             "json_schema": userInteractionResources.assistantJSONSchema
-        }  # Changed to match OpenAI's expected format
+        }
     )
 
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-    # Parse the JSON response
-    parsed_response = json.loads(assistant_response)
+    assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
+    # Format the response for better readability, removing `****` and adding new lines where necessary
+    formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
 
-    # Return the parsed response
-    return parsed_response
+    # Return the formatted response
+    return formatted_response
 
 @app.get("/")
 def read_root():
@@ -54,7 +45,16 @@ def read_root():
 @app.post("/chat/")
 async def chat(message: Message):
     # Initialize the conversation if it is the first message
-    if len(message.conversation_history) == 0:
+    print("Received MESSAGE START-----", message)
+    print("MESSAGE END ------")
+
+    # Check if the system instruction is already in the conversation history
+    system_instruction_present = any(
+        entry["role"] == "system" for entry in message.conversation_history
+    )
+
+    if not system_instruction_present:
+        # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
             "content": userInteractionResources.assistantInstructions
@@ -66,17 +66,21 @@ async def chat(message: Message):
         "content": message.user_message
     })
 
-    # Call the OpenAI assistant
+    print("conversation_history: ", message.conversation_history)
+
+    # Call the OpenAI assistant using the same function as the working Streamlit code
     assistant_response = call_openai_assistant(message.conversation_history)
+    print("assistant_response: ", assistant_response)
+    assistant_response = json.loads(assistant_response)
 
     # Append the assistant's response to the conversation history
     message.conversation_history.append({
         "role": "assistant",
-        "content": json.dumps(assistant_response)
+        "content": assistant_response
     })
 
     # Return the assistant's response and the updated conversation history
     return {
-        "assistant_response": assistant_response.get('response_to_user', ''),
-        "user_profile": assistant_response.get('user_profile', {}),
+        "assistant_response": assistant_response['response_to_user'],
+        "user_profile": assistant_response['user_profile'],
     }
