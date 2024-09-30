@@ -27,11 +27,11 @@ def call_openai_assistant(all_messages):
             "json_schema": userInteractionResources.assistantJSONSchema
         }
     )
-    assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
 
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
+    assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
     # Format the response for better readability, removing `****` and adding new lines where necessary
     formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
 
