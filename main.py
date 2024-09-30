@@ -19,7 +19,7 @@ def serialize_message(message: Dict[str, Any]) -> Dict[str, str]:
         "role": str(message.get("role", "")),
         "content": str(message.get("content", ""))
     }
-    
+
 # Pydantic model for the message request
 class Message(BaseModel):
     user_message: str
@@ -27,6 +27,7 @@ class Message(BaseModel):
 
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
+    serialized_messages = [serialize_message(msg) for msg in all_messages]
     # Make the API call to OpenAI Chat Completions
     response = openai.chat.completions.create(
         model="gpt-4o-mini",  # Changed from "gpt-4o-mini" to "gpt-4"
