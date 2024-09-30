@@ -62,7 +62,6 @@ user_profile_template = {
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
     # Make the API call to OpenAI Chat Completions
-        try:
             response = openai.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=all_messages,
@@ -73,7 +72,7 @@ def call_openai_assistant(all_messages):
             )
     
             # Extract the assistant's response content from the API response
-            assistant_response = response.choices[0].message['content'].strip()
+            assistant_response = response.choices[0].message.content.strip()
 
             # Parse the assistant's response as JSON if it's formatted that way
             try:
@@ -89,10 +88,6 @@ def call_openai_assistant(all_messages):
                 "response_to_user": formatted_response,
                 "user_profile": assistant_response_json.get('user_profile', {})
             }
-    
-        except Exception as e:
-             # Handle any exceptions that occur during the API call
-            return {"error": str(e)}
 
 # Function to update the user profile based on new data
 def update_user_profile(existing_profile, new_data):
