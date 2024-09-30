@@ -18,28 +18,29 @@ class Message(BaseModel):
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
     # Make the API call to OpenAI Chat Completions
-            response = openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=all_messages,
-                response_format={
-                    "type": "json_schema",
-                    "json_schema": userInteractionResources.assistantJSONSchema
-                }
-            )
+    response = openai.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=all_messages,
+          response_format = {
+            "type": "json_schema",
+            "json_schema": userInteractionResources.assistantJSONSchema
+        }
+    )
     
-            assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
+    # Extract the assistant's response content from the API response
+    assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-            # Format the response for better readability, removing `****` and adding new lines where necessary
-            formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
+    # Format the response for better readability, removing `****` and adding new lines where necessary
+    formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
 
-            # Return the formatted response
-            return formatted_response
+    # Return the formatted response
+    return formatted_response
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the matchmaking assistant API!"}
 
-@app.post("/chat")
+@app.post("/chat/")
 async def chat(message: Message):
     # Initialize the conversation if it is the first message
     print("Received MESSAGE START-----", message)
