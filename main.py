@@ -72,8 +72,7 @@ def call_openai_assistant(all_messages):
             )
     
              # Extract the assistant's response content from the API response (assuming it's a dict)
-            assistant_response_str = response.choices[0].message.content
-            assistant_response = json.loads(assistant_response_str)
+            assistant_response = response.choices[0].message.content
 
             # Format the response for better readability
             formatted_response = assistant_response['response_to_user']\
