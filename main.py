@@ -71,22 +71,13 @@ def call_openai_assistant(all_messages):
                 }
             )
     
-             # Extract the assistant's response content from the API response (assuming it's a dict)
-            assistant_response = response.choices[0].message.content
+            assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-            # Format the response for better readability
-            formatted_response = assistant_response['response_to_user']\
-                .replace("**", "")\
-                .replace("##", "")\
-                .replace("•", "\n•")\
-                .replace("1.", "\n1.")\
-                .replace("2.", "\n2.")
+            # Format the response for better readability, removing `****` and adding new lines where necessary
+            formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
 
-            # Return the formatted response and user profile
-            return {
-                "response_to_user": formatted_response,
-                "user_profile": assistant_response.get('user_profile', {})
-    }
+            # Return the formatted response
+            return formatted_response
 
 # Function to update the user profile based on new data
 def update_user_profile(existing_profile, new_data):
