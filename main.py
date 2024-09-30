@@ -4,6 +4,7 @@ import openai
 import os
 import userInteractionResources
 import json
+import re
 
 # Initialize OpenAI API with your API key
 openai.api_key = os.getenv("OPENAI_API_KEY")  # You can also load this from environment or set it directly.
@@ -26,7 +27,8 @@ def call_openai_assistant(all_messages):
             "json_schema": userInteractionResources.assistantJSONSchema
         }
     )
-    
+    assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
+
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
