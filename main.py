@@ -3,13 +3,23 @@ from pydantic import BaseModel
 import openai
 import os
 import userInteractionResources
+
+
 import json
+from typing import Dict, Any
+
 
 # Initialize OpenAI API with your API key
 openai.api_key = os.getenv("OPENAI_API_KEY")  # You can also load this from environment or set it directly.
 
 app = FastAPI()
 
+def serialize_message(message: Dict[str, Any]) -> Dict[str, str]:
+    return {
+        "role": str(message.get("role", "")),
+        "content": str(message.get("content", ""))
+    }
+    
 # Pydantic model for the message request
 class Message(BaseModel):
     user_message: str
