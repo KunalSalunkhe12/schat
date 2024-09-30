@@ -31,8 +31,6 @@ def call_openai_assistant(all_messages):
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
 
-    print("assistant_response: ", assistant_response)
-
     assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
     # Format the response for better readability, removing `****` and adding new lines where necessary
     formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
@@ -62,6 +60,8 @@ async def chat(message: Message):
         "role": "user",
         "content": message.user_message
     })
+
+    print("conversation_history: ", message.conversation_history)
 
     # Call the OpenAI assistant using the same function as the working Streamlit code
     assistant_response = call_openai_assistant(message.conversation_history)
