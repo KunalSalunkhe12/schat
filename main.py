@@ -39,6 +39,7 @@ def call_openai_assistant(all_messages):
 def read_root():
     return {"message": "Welcome to the matchmaking assistant API!"}
 
+@app.post("/chat")
 async def chat(message: Message):
     # Initialize the conversation if it is the first message
     print("Received MESSAGE START-----", message)
