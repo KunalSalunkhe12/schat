@@ -48,12 +48,10 @@ async def chat(message: Message):
     print("Received MESSAGE START-----", message)
     print("MESSAGE END ------")
 
-    # Check if the system instruction is already in the conversation history
-    if len(message.conversation_history) == 0:
-        message.conversation_history.append({
+    message.conversation_history.append({
             "role": "assistant",
             "content": userInteractionResources.assistantInstructions
-        })
+    })
 
     # Add user's message to the conversation history
     message.conversation_history.append({
