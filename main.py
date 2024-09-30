@@ -50,7 +50,6 @@ async def chat(message: Message):
 
     # Check if the system instruction is already in the conversation history
     if len(message.conversation_history) == 0:
-        # Add the system instruction to the conversation history
         message.conversation_history.append({
             "role": "assistant",
             "content": userInteractionResources.assistantInstructions
