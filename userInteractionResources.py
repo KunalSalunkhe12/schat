@@ -46,8 +46,7 @@ Ensure that you collect these key attributes:
 
 Please follow these guidelines in every conversation to ensure a positive and productive interaction and Generate the User profile periodically based on the provided Json schema.
 '''
-
-assistantJSONSchema = {
+{
   "name": "matchmaking_chatbot",
   "strict": True,
   "schema": {
@@ -60,19 +59,19 @@ assistantJSONSchema = {
         "type": "object",
         "properties": {
           "relationship_goals": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "appearance": {
             "type": "object",
             "properties": {
               "personal_appearance": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "appearance_preferred_in_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "importance_of_appearance_on_a_scale_of_1_to_10": {
-                "type": "integer"
+                "type": ["integer", "null"]
               }
             },
             "required": [
@@ -86,10 +85,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_location": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "willingness_to_relocate": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -102,10 +101,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_spirituality": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "spirituality_preferred_in_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -118,10 +117,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_personality_attributes": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "personality_attributes_preferred_in_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -134,10 +133,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_age": {
-                "type": "integer"
+                "type": ["integer", "null"]
               },
               "preferred_age_range_for_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -150,10 +149,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_interests": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "preferred_interests_in_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -166,10 +165,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "their_identity": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "desired_identity_for_partner": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -182,10 +181,10 @@ assistantJSONSchema = {
             "type": "object",
             "properties": {
               "has_kids_or_wishes_to_have_kids": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "preference_for_partner_having_kids": {
-                "type": "string"
+                "type": ["string", "null"]
               }
             },
             "required": [
@@ -195,22 +194,22 @@ assistantJSONSchema = {
             "additionalProperties": False
           },
           "smoking": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "pets": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "career_goals": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "annual_income": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "willingness_to_travel": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "special_requests": {
-            "type": "string"
+            "type": ["string", "null"]
           }
         },
         "required": [
