@@ -62,26 +62,37 @@ user_profile_template = {
 # Function to call the OpenAI Chat API
 def call_openai_assistant(all_messages):
     # Make the API call to OpenAI Chat Completions
-    response = openai.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=all_messages,
-        response_format={
-            "type": "json_schema",
-            "json_schema": userInteractionResources.assistantJSONSchema
-        }
-    )
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=all_messages,
+                response_format={
+                    "type": "json_schema",
+                    "json_schema": userInteractionResources.assistantJSONSchema
+                }
+            )
     
-    # Extract the assistant's response content from the API response
-    assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
+            # Extract the assistant's response content from the API response
+            assistant_response = response.choices[0].message['content'].strip()
 
-    # Format the response for better readability
-    formatted_response = assistant_response['response_to_user'].replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
+            # Parse the assistant's response as JSON if it's formatted that way
+            try:
+                assistant_response_json = json.loads(assistant_response)
+            except json.JSONDecodeError:
+                raise ValueError("The assistant's response is not in the expected JSON format.")
 
-    # Return the formatted response
-    return {
-        "response_to_user": formatted_response,
-        "user_profile": assistant_response['user_profile']
-    }  
+            # Format the response for better readability
+            formatted_response = assistant_response_json.get('response_to_user', '').replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
+
+            # Return the formatted response and user profile
+            return {
+                "response_to_user": formatted_response,
+                "user_profile": assistant_response_json.get('user_profile', {})
+            }
+    
+        except Exception as e:
+             # Handle any exceptions that occur during the API call
+            return {"error": str(e)}
 
 # Function to update the user profile based on new data
 def update_user_profile(existing_profile, new_data):
