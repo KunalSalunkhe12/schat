@@ -49,14 +49,10 @@ async def chat(message: Message):
     print("MESSAGE END ------")
 
     # Check if the system instruction is already in the conversation history
-    system_instruction_present = any(
-        entry["role"] == "system" for entry in message.conversation_history
-    )
-
-    if not system_instruction_present:
-        # Add system's instructions message to the conversation history
+    if len(message.conversation_history) == 0:
+        # Add the system instruction to the conversation history
         message.conversation_history.append({
-            "role": "system",
+            "role": "assistant",
             "content": userInteractionResources.assistantInstructions
         })
 
