@@ -48,8 +48,12 @@ async def chat(message: Message):
     print("Received MESSAGE START-----", message)
     print("MESSAGE END ------")
 
-    # Check if the system instruction is already in the conversation history
-    if len(message.conversation_history) == 0:
+# Function to check if the system role exists
+    def system_role_exists(conversation_history):
+        return any(message.get("role") == "system" for message in conversation_history)
+
+    # Check if the system role exists before adding instructions
+    if not system_role_exists(message.conversation_history):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
