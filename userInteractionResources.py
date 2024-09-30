@@ -46,7 +46,7 @@ Ensure that you collect these key attributes:
 
 Please follow these guidelines in every conversation to ensure a positive and productive interaction and Generate the User profile based on the user messages periodically based on the provided Json schema.
 '''
-{
+assistantJSONSchema = {
   "name": "matchmaking_chatbot",
   "strict": True,
   "schema": {
