@@ -3,7 +3,6 @@ from pydantic import BaseModel
 import openai
 import os
 import userInteractionResources
-import oldUserInteractionResources
 import json
 
 # Initialize OpenAI API with your API key
@@ -51,7 +50,7 @@ async def chat(message: Message):
         # Add system's instructions message to the conversation history
         message.conversation_history.append({
             "role": "system",
-            "content": oldUserInteractionResources.assistantInstructions
+            "content": userInteractionResources.assistantInstructions
         })
 
     # Add user's message to the conversation history
