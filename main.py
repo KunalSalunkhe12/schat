@@ -65,7 +65,6 @@ async def chat(message: Message):
     # Call the OpenAI assistant using the same function as the working Streamlit code
     assistant_response = call_openai_assistant(message.conversation_history)
     print("assistant_response: ", assistant_response)
-    assistant_response = json.loads(assistant_response)
 
     # Append the assistant's response to the conversation history
     message.conversation_history.append({
