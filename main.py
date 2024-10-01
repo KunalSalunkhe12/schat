@@ -28,7 +28,7 @@ def call_openai_assistant(all_messages):
         }
     )
 
-    print("OPEN AI RESPONSE: ", response)
+    print("Raw OpenAI response:", response.choices[0].message.content)
 
     # Extract the assistant's response content from the API response
     assistant_response = response.choices[0].message.content.strip()  # Ensure clean formatting
