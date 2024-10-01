@@ -35,7 +35,7 @@ def call_openai_assistant(all_messages):
 
     assistant_response = re.sub(r'[\x00-\x1F\x7F]', '', assistant_response)
     # Format the response for better readability, removing `****` and adding new lines where necessary
-    formatted_response = assistant_response.replace("**", "").replace("##", "").replace("•", "\n•").replace("1.", "\n1.").replace("2.", "\n2.")
+    formatted_response = assistant_response.replace("**", "").replace("##", "").replace("\n", "\\n").replace("\t", "\\t")
 
     # Return the formatted response
     return formatted_response
