@@ -51,8 +51,8 @@ async def chat(message: Message):
     print("MESSAGE END ------")
 
     message.conversation_history.append({
-            "role": "assistant",
-            "content": userInteractionResources.assistantInstructions
+        "role": "assistant",
+        "content": userInteractionResources.assistantInstructions
     })
 
     # Add user's message to the conversation history
